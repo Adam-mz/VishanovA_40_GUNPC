@@ -1,85 +1,54 @@
 ﻿
 
-Console.WriteLine("=== Задание 1: Первые 8 чисел Фибоначчи ===");
+Console.WriteLine("=== Задание 1: Первые 10 чисел Фибоначчи ===");
 
-int[] fib = new int[8];
+int[] fib = new int[10];
    fib[0] = 0;
    fib[1] = 1;
 for (int i = 2; i<fib.Length;i++)
     fib[i] = fib[i-1] + fib[i-2];
-Console.WriteLine("Fibonacci: " + string.Join(", ", fib));
+Console.WriteLine("Фибоначчи: " + string.Join(", ", fib));
 
 
-Console.WriteLine("\n=== Задание 2: Массив месяцев ===");
+Console.WriteLine("\n=== Задание 2: Чётные числа от 2 до 20 ===");
 
-string[] months = new string[]
+List<int> evens = [];
+for (int i = 2; i <= 20; i++)
 {
-    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-};
-Console.WriteLine("Месяцы года: " + string.Join(", ", months));
-
-
-Console.WriteLine("\n=== Задание 3: Матрица 3x3 ===");
-
-int[,] matrix = new int[3, 3]
-       {
-            { (int)Math.Pow(2, 1), (int)Math.Pow(3, 1), (int)Math.Pow(4, 1) },
-            { (int)Math.Pow(2, 2), (int)Math.Pow(3, 2), (int)Math.Pow(4, 2) },
-            { (int)Math.Pow(2, 3), (int)Math.Pow(3, 3), (int)Math.Pow(4, 3) }
-       };
-for (int i = 0; i  < 3; i ++)
-
-{
-    for (int j = 0; j < 3; j++)
+    if (i % 2 == 0)
     {
-        Console.Write(matrix[i, j]+"\t");
+       evens.Add(i);
     }
-    Console.WriteLine("\n");
+}
+Console.WriteLine("Чётные числа: " + string.Join(", ", evens));
+
+
+Console.WriteLine("\n=== Задание 3: Таблицу умножения от 1 до 5");
+
+for (int i = 1; i <= 5; i++)
+{
+    for (int j = 1; j <= 5; j++)
+    {
+        Console.Write(i * j + "\t");
+    }
+    Console.WriteLine();
 }
 
-Console.WriteLine("\n=== Задание 4: Jagged Array ===");
+Console.WriteLine("\n=== Задание 4: Ввод пароля");
 
-double[][] jagged = new double[3][];
+string password = "qwerty";
 
-
-jagged[0] = new double[] { 1, 2, 3, 4, 5 };
-
-
-jagged[1] = new double[] { Math.E, Math.PI };
-
-
-jagged[2] = new double[]
+do
 {
-            Math.Log10(1),
-            Math.Log10(10),
-            Math.Log10(100),
-            Math.Log10(1000)
-};
-
-Console.WriteLine("Jagged array:");
-
-for (int i = 0; i < jagged.Length; i++)
-{
-    Console.WriteLine("Row " + (i + 1) + ": " + string.Join(", ", jagged[i]));
-}
-
-Console.WriteLine("\n=== Задание 5: Копирование элементов массива ===");
-
-int[] array = { 1, 2, 3, 4, 5 };
-int[] array2 = { 7, 8, 9, 10, 11, 12, 13 };
-
-
-Array.Copy(array, array2, 3);
-
-Console.WriteLine("array2 после копирования:");
-Console.WriteLine(string.Join(", ", array2));
-
-
-Console.WriteLine("\n=== Задание 6: Увеличение размера массива ===");
-
-
-Array.Resize(ref array, array.Length * 2);
-
-Console.WriteLine("array после Resize:");
-Console.WriteLine(string.Join(", ", array));
+        Console.Write("Введите пароль: ");
+    string input = Console.ReadLine();
+    if (input != password)
+    {
+        Console.WriteLine("Неверный пароль. Попробуйте снова.");
+    }
+    else
+    {
+        Console.WriteLine("Пароль верный. Доступ разрешён.");
+        break;
+    }
+}while (true);
