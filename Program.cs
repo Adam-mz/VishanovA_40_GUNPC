@@ -1,54 +1,50 @@
-﻿
-
-Console.WriteLine("=== Задание 1: Первые 10 чисел Фибоначчи ===");
-
-int[] fib = new int[10];
-   fib[0] = 0;
-   fib[1] = 1;
-for (int i = 2; i<fib.Length;i++)
-    fib[i] = fib[i-1] + fib[i-2];
-Console.WriteLine("Фибоначчи: " + string.Join(", ", fib));
-
-
-Console.WriteLine("\n=== Задание 2: Чётные числа от 2 до 20 ===");
-
-List<int> evens = [];
-for (int i = 2; i <= 20; i++)
+﻿internal class Program
 {
-    if (i % 2 == 0)
+    public class Unit
     {
-       evens.Add(i);
+        public string Name { get; }
+
+        private float health;
+        public float Health
+        {
+            get { return health; }
+        }
+        public int Damage { get; }
+        public float Armor { get; }
+        public Unit() : this("Unknown Unit")
+        {
+        }
+        public Unit(string name)
+        {
+            Name = name;
+            health = 100f;   
+            Damage = 5;
+            Armor = 0.6f;
+        }
+
+        public float GetRealHealth()
+        {
+            return Health * (1f + Armor);
+        }
+
+        
+        public bool SetDamage(float value)
+        {
+            health -= value * Armor;
+            return health <= 0f;
+        }
+    }
+
+    private static void Main(string[] args)
+    {
+        Unit unit = new Unit("Knight");
+        
+
+        bool isDead = unit.SetDamage(50f);
+        Console.WriteLine(unit.Name);
+        Console.WriteLine(unit.Health);
+        Console.WriteLine(unit.GetRealHealth());
+        Console.WriteLine(isDead ? "Юнит погиб" : "Юнит жив");
+
     }
 }
-Console.WriteLine("Чётные числа: " + string.Join(", ", evens));
-
-
-Console.WriteLine("\n=== Задание 3: Таблицу умножения от 1 до 5");
-
-for (int i = 1; i <= 5; i++)
-{
-    for (int j = 1; j <= 5; j++)
-    {
-        Console.Write(i * j + "\t");
-    }
-    Console.WriteLine();
-}
-
-Console.WriteLine("\n=== Задание 4: Ввод пароля");
-
-string password = "qwerty";
-
-do
-{
-        Console.Write("Введите пароль: ");
-    string input = Console.ReadLine();
-    if (input != password)
-    {
-        Console.WriteLine("Неверный пароль. Попробуйте снова.");
-    }
-    else
-    {
-        Console.WriteLine("Пароль верный. Доступ разрешён.");
-        break;
-    }
-}while (true);
