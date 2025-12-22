@@ -1,184 +1,332 @@
-﻿internal class Program
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace HomeWork
 {
-   
-
-public struct Interval
-{
-    private static Random random = new Random();
-
-    public float Min { get; }
-    public float Max { get; }
-
-    public Interval(int minValue, int maxValue)
+    internal class Program
     {
-        if (minValue < 0)
+        private class ListTask
         {
-            Console.WriteLine("Min value was negative, set to 0");
-            minValue = 0;
+            private readonly List<string> _listOfStrings;
+
+            public ListTask()
+            {
+                _listOfStrings = new List<string> { "Первая строка", "Вторая строка", "Третья строка" };
+            }
+
+            public void TaskLoop()
+            {
+                Console.WriteLine("=== Задание 1: Работа со списком строк ===");
+                Console.WriteLine("Для выхода введите '--exit'");
+
+                while (true)
+                {
+                    Console.WriteLine("\nТекущее содержимое списка:");
+                    foreach (var item in _listOfStrings)
+                    {
+                        Console.WriteLine($"- {item}");
+                    }
+
+                    Console.Write("\nВведите новую строку для добавления в конец списка: ");
+                    string input = Console.ReadLine();
+
+                    if (input == "--exit")
+                    {
+                        Console.WriteLine("Выход из задания 1.");
+                        break;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(input))
+                    {
+                        _listOfStrings.Add(input);
+                        Console.WriteLine($"Строка '{input}' добавлена в конец списка.");
+                    }
+
+                    Console.Write("\nВведите строку для добавления в середину списка: ");
+                    string middleInput = Console.ReadLine();
+
+                    if (middleInput == "--exit")
+                    {
+                        Console.WriteLine("Выход из задания 1.");
+                        break;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(middleInput))
+                    {
+                        int middleIndex = _listOfStrings.Count / 2;
+                        _listOfStrings.Insert(middleIndex, middleInput);
+                        Console.WriteLine($"Строка '{middleInput}' добавлена в середину списка (индекс {middleIndex}).");
+                    }
+                }
+            }
         }
 
-        if (maxValue < 0)
+        private class DictionaryTask
         {
-            Console.WriteLine("Max value was negative, set to 0");
-            maxValue = 0;
+            private readonly Dictionary<string, double> _studentsGrades;
+
+            public DictionaryTask()
+            {
+                _studentsGrades = new Dictionary<string, double>
+                {
+                    { "Иван Иванов", 4.5 },
+                    { "Мария Петрова", 3.8 },
+                    { "Алексей Сидоров", 4.2 }
+                };
+            }
+
+            public void TaskLoop()
+            {
+                Console.WriteLine("=== Задание 2: Словарь студентов и оценок ===");
+                Console.WriteLine("Для выхода введите '--exit'");
+
+                while (true)
+                {
+                    Console.WriteLine("\nТекущий список студентов:");
+                    foreach (var student in _studentsGrades)
+                    {
+                        Console.WriteLine($"- {student.Key}: {student.Value}");
+                    }
+
+                    Console.Write("\nВведите имя студента для добавления/обновления: ");
+                    string name = Console.ReadLine();
+
+                    if (name == "--exit")
+                    {
+                        Console.WriteLine("Выход из задания 2.");
+                        break;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        Console.WriteLine("Имя не может быть пустым!");
+                        continue;
+                    }
+
+                    Console.Write("Введите оценку студента (от 2 до 5): ");
+                    string gradeInput = Console.ReadLine();
+
+                    if (gradeInput == "--exit")
+                    {
+                        Console.WriteLine("Выход из задания 2.");
+                        break;
+                    }
+
+                    if (double.TryParse(gradeInput, out double grade) && grade >= 2 && grade <= 5)
+                    {
+                        _studentsGrades[name] = grade;
+                        Console.WriteLine($"Студент '{name}' добавлен/обновлен с оценкой {grade}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: оценка должна быть числом от 2 до 5!");
+                        continue;
+                    }
+
+                    Console.Write("\nВведите имя студента для поиска оценки: ");
+                    string searchName = Console.ReadLine();
+
+                    if (searchName == "--exit")
+                    {
+                        Console.WriteLine("Выход из задания 2.");
+                        break;
+                    }
+
+                    if (_studentsGrades.TryGetValue(searchName, out double foundGrade))
+                    {
+                        Console.WriteLine($"Студент '{searchName}' имеет оценку: {foundGrade}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Студент с именем '{searchName}' не найден в словаре.");
+                    }
+                }
+            }
         }
 
-        if (minValue > maxValue)
+        private class LinkedListTask
         {
-            Console.WriteLine("Incorrect interval values, swapped");
-            (minValue, maxValue) = (maxValue, minValue);
+            private class Node
+            {
+                public string Data { get; set; }
+                public Node Next { get; set; }
+                public Node Previous { get; set; }
+
+                public Node(string data)
+                {
+                    Data = data;
+                    Next = null;
+                    Previous = null;
+                }
+            }
+
+            private Node _head;
+            private Node _tail;
+
+            public LinkedListTask()
+            {
+                _head = null;
+                _tail = null;
+            }
+
+            public void Add(string data)
+            {
+                Node newNode = new Node(data);
+
+                if (_head == null)
+                {
+                    _head = newNode;
+                    _tail = newNode;
+                }
+                else
+                {
+                    _tail.Next = newNode;
+                    newNode.Previous = _tail;
+                    _tail = newNode;
+                }
+            }
+
+            public void PrintForward()
+            {
+                Console.WriteLine("\nСписок в прямом порядке:");
+                Node current = _head;
+                while (current != null)
+                {
+                    Console.Write($"{current.Data} ");
+                    current = current.Next;
+                }
+                Console.WriteLine();
+            }
+
+            public void PrintBackward()
+            {
+                Console.WriteLine("Список в обратном порядке:");
+                Node current = _tail;
+                while (current != null)
+                {
+                    Console.Write($"{current.Data} ");
+                    current = current.Previous;
+                }
+                Console.WriteLine();
+            }
+
+            public void TaskLoop()
+            {
+                Console.WriteLine("=== Задание 3: Двусвязный список ===");
+                Console.WriteLine("Для выхода введите '--exit'");
+                Console.WriteLine("Введите от 3 до 6 элементов для создания списка:");
+
+                int count = 0;
+
+                while (true)
+                {
+                    if (count < 3)
+                    {
+                        Console.Write($"Введите элемент {count + 1}: ");
+                    }
+                    else if (count < 6)
+                    {
+                        Console.Write($"Введите элемент {count + 1} (или '--exit' для завершения): ");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Достигнут максимум элементов (6).");
+                        break;
+                    }
+
+                    string input = Console.ReadLine();
+
+                    if (input == "--exit")
+                    {
+                        if (count < 3)
+                        {
+                            Console.WriteLine("Необходимо ввести минимум 3 элемента!");
+                            continue;
+                        }
+                        break;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(input))
+                    {
+                        Add(input);
+                        count++;
+                    }
+
+                    if (count == 6) break;
+                }
+
+                if (count >= 3)
+                {
+                    PrintForward();
+                    PrintBackward();
+                }
+
+                Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+                Console.ReadKey();
+            }
         }
 
-        if (minValue == maxValue)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Interval values are equal, max increased by 10");
-            maxValue += 10;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Выберите задание для выполнения:");
+                Console.WriteLine("1 - Работа со списком строк");
+                Console.WriteLine("2 - Словарь студентов и оценок");
+                Console.WriteLine("3 - Двусвязный список");
+                Console.WriteLine("0 - Выход из программы");
+                Console.Write("Введите номер задания: ");
+
+                if (!int.TryParse(Console.ReadLine(), out int task))
+                {
+                    Console.WriteLine("Ошибка ввода! Нажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                if (task == 0)
+                {
+                    Console.WriteLine("Выход из программы.");
+                    break;
+                }
+
+                switch (task)
+                {
+                    case 1:
+                        CheckTaskFirst();
+                        break;
+                    case 2:
+                        CheckTaskSecond();
+                        break;
+                    case 3:
+                        CheckTaskThird();
+                        break;
+                    default:
+                        Console.WriteLine("Неверный номер задания! Нажмите любую клавишу для продолжения...");
+                        Console.ReadKey();
+                        break;
+                }
+            }
         }
 
-        Min = minValue;
-        Max = maxValue;
-    }
+        private static void CheckTaskFirst()
+        {
+            var listTask = new ListTask();
+            listTask.TaskLoop();
+        }
 
-    public float Get()
-    {
-        return (float)(Min + random.NextDouble() * (Max - Min));
+        private static void CheckTaskSecond()
+        {
+            var dictTask = new DictionaryTask();
+            dictTask.TaskLoop();
+        }
+
+        private static void CheckTaskThird()
+        {
+            var linkedListTask = new LinkedListTask();
+            linkedListTask.TaskLoop();
+        }
     }
 }
-
-public class Unit
-{
-    public string Name { get; }
-
-    private float health;
-    public float Health => health;
-
-    public Interval Damage { get; }
-    public float Armor { get; }
-
-    public Unit() : this("Unknown Unit", 0, 10) { }
-
-    public Unit(string name) : this(name, 0, 10) { }
-
-    public Unit(string name, int minDamage, int maxDamage)
-    {
-        Name = name;
-        health = 100f;
-        Armor = 0.6f;
-        Damage = new Interval(minDamage, maxDamage);
-    }
-
-    public float GetRealHealth()
-    {
-        return Health * (1f + Armor);
-    }
-
-    public bool SetDamage(float value)
-    {
-        health -= value * Armor;
-        return health <= 0f;
-    }
-
-    public override string ToString()
-    {
-        return $"{Name} (Health: {Health})";
-    }
-}
-
-public class Weapon
-{
-    public string Name { get; }
-    public Interval Damage { get; private set; }
-    public float Durability { get; }
-
-    public Weapon(string name)
-    {
-        Name = name;
-        Durability = 1f;
-        Damage = new Interval(1, 10);
-    }
-
-    public Weapon(string name, int minDamage, int maxDamage) : this(name)
-    {
-        SetDamageParams(minDamage, maxDamage);
-    }
-
-    public void SetDamageParams(int minDamage, int maxDamage)
-    {
-        if (minDamage > maxDamage)
-        {
-            Console.WriteLine($"[{Name}] Incorrect damage values, swapped");
-            (minDamage, maxDamage) = (maxDamage, minDamage);
-        }
-
-        if (minDamage < 1)
-        {
-            Console.WriteLine($"[{Name}] Min damage forced to 1");
-            minDamage = 1;
-        }
-
-        if (maxDamage <= 1)
-        {
-            maxDamage = 10;
-        }
-
-        Damage = new Interval(minDamage, maxDamage);
-    }
-
-    public int GetDamage()
-    {
-        return (int)((Damage.Min + Damage.Max) / 2);
-    }
-
-    public override string ToString()
-    {
-        return $"{Name} (Damage: {Damage.Min}-{Damage.Max})";
-    }
-}
-
-public struct Room
-{
-    public Unit Unit;
-    public Weapon Weapon;
-
-    public Room(Unit unit, Weapon weapon)
-    {
-        Unit = unit;
-        Weapon = weapon;
-    }
-}
-
-public class Dungeon
-{
-    private Room[] rooms;
-
-    public Dungeon()
-    {
-        rooms = new Room[]
-        {
-            new Room(new Unit("Warrior", 2, 6), new Weapon("Sword", 3, 7)),
-            new Room(new Unit("Mage", 1, 8), new Weapon("Staff", 2, 10)),
-            new Room(new Unit("Rogue", 3, 5), new Weapon("Dagger", 4, 6))
-        };
-    }
-
-    public void ShowRooms()
-    {
-        for (int i = 0; i < rooms.Length; i++)
-        {
-            var room = rooms[i];
-            Console.WriteLine("Unit of room: " + room.Unit);
-            Console.WriteLine("Weapon of room: " + room.Weapon);
-            Console.WriteLine("—");
-        }
-    }
-}
-
-
-
-    static void Main()
-    {
-        Dungeon dungeon = new Dungeon();
-        dungeon.ShowRooms();
-    }
-}
-
