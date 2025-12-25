@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using VishanovA_40_GUNPC;
+using System.Text;
 
 namespace HomeWork
 {
@@ -9,60 +7,86 @@ namespace HomeWork
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("=== Домашнее задание по коллекциям ===");
+            // ===== Задание 1 =====
+            string concatResult = ConcatenateStrings("Hello", " World");
+            Console.WriteLine("Задание 1:");
+            Console.WriteLine(concatResult);
+            Console.WriteLine();
 
-            while (true)
+            // ===== Задание 2 =====
+            string greet = GreetUser("Adam", 20);
+            Console.WriteLine("Задание 2:");
+            Console.WriteLine(greet);
+            Console.WriteLine();
+
+            // ===== Задание 3 =====
+            string info = GetStringInfo("HeLLo WoRLd");
+            Console.WriteLine("Задание 3:");
+            Console.WriteLine(info);
+            Console.WriteLine();
+
+            // ===== Задание 4 =====
+            string firstFive = GetFirstFiveCharacters("фыфывфывфывфыв");
+            Console.WriteLine("Задание 4:");
+            Console.WriteLine(firstFive);
+            Console.WriteLine();
+
+            // ===== Задание 5 =====
+            string[] words = { "C#", "is", "a", "powerful", "language" };
+            StringBuilder sentenceBuilder = BuildSentence(words);
+            Console.WriteLine("Задание 5:");
+            Console.WriteLine(sentenceBuilder.ToString());
+            Console.WriteLine();
+
+            // ===== Задание 6 =====
+            string replaced = ReplaceWords("Hello world", "world", "universe");
+            Console.WriteLine("Задание 6:");
+            Console.WriteLine(replaced);
+        }
+
+        // ===== Задание 1 =====
+        public static string ConcatenateStrings(string first, string second)
+        {
+            return first + second;
+        }
+
+        // ===== Задание 2 =====
+        public static string GreetUser(string name, int age)
+        {
+            return $"Hello, {name}!\nYou are {age} years old.";
+        }
+
+        // ===== Задание 3 =====
+        public static string GetStringInfo(string input)
+        {
+            return $"Length: {input.Length}\n" +
+                   $"Upper case: {input.ToUpper()}\n" +
+                   $"Lower case: {input.ToLower()}";
+        }
+
+        // ===== Задание 4 =====
+        public static string GetFirstFiveCharacters(string input)
+        {
+            return input.Substring(0, 5);
+        }
+
+        // ===== Задание 5 =====
+        public static StringBuilder BuildSentence(string[] words)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string word in words)
             {
-                Console.WriteLine("\nВыберите задание для выполнения:");
-                Console.WriteLine("1. Работа со списком строк");
-                Console.WriteLine("2. Словарь студентов и оценок");
-                Console.WriteLine("3. Двусвязный список");
-                Console.WriteLine("0. Выход из программы");
-                Console.Write("Ваш выбор: ");
-
-                if (!int.TryParse(Console.ReadLine(), out int task))
-                {
-                    Console.WriteLine("Ошибка! Введите число от 0 до 3.");
-                    continue;
-                }
-
-                switch (task)
-                {
-                    case 0:
-                        Console.WriteLine("Выход из программы.");
-                        return;
-                    case 1:
-                        CheckTaskFirst();
-                        break;
-                    case 2:
-                        CheckTaskSecond();
-                        break;
-                    case 3:
-                        CheckTaskThird();
-                        break;
-                    default:
-                        Console.WriteLine("Неверный выбор. Введите число от 0 до 3.");
-                        break;
-                }
+                sb.Append(word).Append(" ");
             }
+
+            return sb;
         }
 
-        private static void CheckTaskFirst()
+        // ===== Задание 6 =====
+        public static string ReplaceWords(string inputString, string wordToReplace, string replacementWord)
         {
-            var listTask = new ListTask();
-            listTask.TaskLoop();
-        }
-
-        private static void CheckTaskSecond()
-        {
-            var dictTask = new DictionaryTask();
-            dictTask.TaskLoop();
-        }
-
-        private static void CheckTaskThird()
-        {
-            var linkedListTask = new DoublyLinkedListTask();
-            linkedListTask.TaskLoop();
+            return inputString.Replace(wordToReplace, replacementWord);
         }
     }
 }
